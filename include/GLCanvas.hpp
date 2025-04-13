@@ -1,5 +1,8 @@
 #pragma once
 #include <wx/glcanvas.h>
+#include <wx/image.h>
+#include <wx/dc.h>
+#include <wx/dcclient.h>
 #include <vector>
 #include "Shape.hpp"
 #include "Constants.hpp"
@@ -23,6 +26,8 @@ public:
     void ToggleShape(int index, bool state);
     void UpdateScale(float scale);
     void UpdatePosition(float x, float y);
+    float GetHorizontalPosition() const { return _shapes[0]->GetX(); }
+    float GetVerticalPosition() const { return _shapes[0]->GetY(); }
 
     DECLARE_EVENT_TABLE()
 };

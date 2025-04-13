@@ -1,4 +1,3 @@
-
 #pragma once
 #include <GL/gl.h>
 #include <cmath>
@@ -18,6 +17,8 @@ public:
     virtual void Draw() const = 0;
     void SetScale(float scale) { _scale = scale; }
     void SetPosition(float x, float y) { _posX = x; _posY = y; }
+    float GetX() const { return _posX; }
+    float GetY() const { return _posY; }
     virtual ~Shape() {}
 };
 
@@ -29,10 +30,10 @@ public:
         glScalef(_scale, _scale, 1.0f);
         
         glBegin(GL_TRIANGLES);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex2f(-0.2f, -0.2f);
-        glVertex2f(0.2f, -0.2f);
-        glVertex2f(0.0f, 0.2f);
+        glColor3f(0.0f, 0.0f, 0.0f);
+        glVertex2f(-0.3f, -0.225f);
+        glVertex2f(0.3f, -0.225f);
+        glVertex2f(0.0f, 0.35f);
         glEnd();
         
         glPopMatrix();
@@ -47,11 +48,11 @@ public:
         glScalef(_scale, _scale, 1.0f);
         
         glBegin(GL_QUADS);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex2f(-0.2f, -0.2f);
-        glVertex2f(0.2f, -0.2f);
-        glVertex2f(0.2f, 0.2f);
-        glVertex2f(-0.2f, 0.2f);
+        glColor3f(0.0f, 0.0f, 0.0f);
+        glVertex2f(-0.225f, -0.225f);
+        glVertex2f(0.225f, -0.225f);
+        glVertex2f(0.225f, 0.225f);
+        glVertex2f(-0.225f, 0.225f);
         glEnd();
         
         glPopMatrix();
@@ -66,11 +67,11 @@ public:
         glScalef(_scale, _scale, 1.0f);
         
         glBegin(GL_TRIANGLE_FAN);
-        glColor3f(0.0f, 0.0f, 1.0f);
+        glColor3f(0.0f, 0.0f, 0.0f);
         glVertex2f(0.0f, 0.0f);
         for(int i = 0; i <= 32; i++) {
             float angle = 2.0f * M_PI * i / 32;
-            glVertex2f(0.2f * cos(angle), 0.2f * sin(angle));
+            glVertex2f(0.25f * cos(angle), 0.25f * sin(angle));
         }
         glEnd();
         

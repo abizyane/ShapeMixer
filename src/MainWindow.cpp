@@ -30,13 +30,21 @@ void MainWindow::CreateControls() {
         sizer->Add(checkbox, 0, wxALL, 5);
     }
 
-    wxSlider* posSlider = new wxSlider(_controlPanel, wxID_ANY, 50, 0, 100);
-    posSlider->Bind(wxEVT_SLIDER, [=](wxCommandEvent& evt) {
-        float pos = (evt.GetInt() - 50) / 50.0f;
-        _canvas->UpdatePosition(pos, pos);
+    wxSlider* hPosSlider = new wxSlider(_controlPanel, wxID_ANY, 50, 0, 100);
+    hPosSlider->Bind(wxEVT_SLIDER, [=](wxCommandEvent& evt) {
+        float hPos = (evt.GetInt() - 50) / 50.0f;
+        _canvas->UpdatePosition(hPos, _canvas->GetVerticalPosition());
     });
-    sizer->Add(new wxStaticText(_controlPanel, wxID_ANY, "Position"), 0, wxALL, 5);
-    sizer->Add(posSlider, 0, wxEXPAND | wxALL, 5);
+    sizer->Add(new wxStaticText(_controlPanel, wxID_ANY, "Horizontal Position"), 0, wxALL, 5);
+    sizer->Add(hPosSlider, 0, wxEXPAND | wxALL, 5);
+
+    wxSlider* vPosSlider = new wxSlider(_controlPanel, wxID_ANY, 50, 0, 100);
+    vPosSlider->Bind(wxEVT_SLIDER, [=](wxCommandEvent& evt) {
+        float vPos = (evt.GetInt() - 50) / 50.0f;
+        _canvas->UpdatePosition(_canvas->GetHorizontalPosition(), vPos);
+    });
+    sizer->Add(new wxStaticText(_controlPanel, wxID_ANY, "Vertical Position"), 0, wxALL, 5);
+    sizer->Add(vPosSlider, 0, wxEXPAND | wxALL, 5);
 
     wxSlider* scaleSlider = new wxSlider(_controlPanel, wxID_ANY, 50, 10, 100);
     scaleSlider->Bind(wxEVT_SLIDER, [=](wxCommandEvent& evt) {

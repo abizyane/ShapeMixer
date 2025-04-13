@@ -1,6 +1,5 @@
 #include "../include/GLCanvas.hpp"
 
-
 BEGIN_EVENT_TABLE(GLCanvas, wxGLCanvas)
     EVT_PAINT(GLCanvas::OnPaint)
     EVT_MOUSE_EVENTS(GLCanvas::OnMouse)
@@ -19,7 +18,9 @@ GLCanvas::GLCanvas(wxWindow* parent)
     _shapeStates = std::vector<bool>(3, false);
 
     SetCurrent(*_context);
+    glEnable(GL_TEXTURE_2D);
     _buttonTexture = LoadTexture("resources/button.png");
+    glDisable(GL_TEXTURE_2D);
 }
 
 GLCanvas::~GLCanvas() {
@@ -29,6 +30,56 @@ GLCanvas::~GLCanvas() {
         delete _context;
     if (_buttonTexture)
         glDeleteTextures(1, &_buttonTexture);
+}
+
+void GLCanvas::OnSize(wxSizeEvent& evt) {
+    int width, height;
+    GetClientSize(&width, &height);
+    SetCurrent(*_context);
+    glViewport(0, 0, width, height);
+    Refresh();
+    evt.Skip();
+}
+
+void GLCanvas::OnPaint(wxPaintEvent&) {
+    wxGLCanvas::SetCurrent(*_context);
+    wxPaintDC(this);
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+
+    for(size_t i = 0; i < _shapes.size(); ++i) {
+        if(_shapeStates[i]) {
+            _shapes[i]->Draw();
+        }
+    }
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, _buttonTexture);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0); glVertex2f(0.8f, 0.8f);
+    glTexCoord2f(1, 0); glVertex2f(0.9f, 0.8f);
+    glTexCoord2f(1, 1); glVertex2f(0.9f, 0.9f);
+    glTexCoord2f(0, 1); glVertex2f(0.8f, 0.9f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    SwapBuffers();
+}
+
+void GLCanvas::OnMouse(wxMouseEvent& evt) {
+    if (evt.LeftDown()) {
+        wxSize size = GetSize();
+        float x = (2.0f * evt.GetX() / size.x) - 1.0f;
+        float y = 1.0f - (2.0f * evt.GetY() / size.y);
+
+        if (x > 0.8f && x < 0.9f && y > 0.8f && y < 0.9f) {
+            wxCommandEvent event(wxEVT_BUTTON);
+            event.SetId(ID_TOGGLE_PANEL);
+            wxPostEvent(GetParent(), event);
+        }
+    }
 }
 
 GLuint GLCanvas::LoadTexture(const wxString& filename) {
@@ -52,51 +103,6 @@ GLuint GLCanvas::LoadTexture(const wxString& filename) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     return textureID;
-}
-
-void GLCanvas::OnPaint(wxPaintEvent&) {
-    wxGLCanvas::SetCurrent(*_context);
-    wxPaintDC(this);
-
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-
-    for(size_t i = 0; i < _shapes.size(); ++i) {
-        if(_shapeStates[i]) {
-            _shapes[i]->Draw();
-        }
-    }
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, _buttonTexture);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex2f(0.8f, 0.8f);
-    glTexCoord2f(1, 0); glVertex2f(1.0f, 0.8f);
-    glTexCoord2f(1, 1); glVertex2f(1.0f, 1.0f);
-    glTexCoord2f(0, 1); glVertex2f(0.8f, 1.0f);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-
-    SwapBuffers();
-}
-
-void GLCanvas::OnSize(wxSizeEvent& evt) {
-    wxGLCanvas::OnSize(evt);
-    Refresh();
-}
-
-void GLCanvas::OnMouse(wxMouseEvent& evt) {
-    if (evt.LeftDown()) {
-        wxSize size = GetSize();
-        float x = (2.0f * evt.GetX() / size.x) - 1.0f;
-        float y = 1.0f - (2.0f * evt.GetY() / size.y);
-
-        if (x > 0.8f && x < 1.0f && y > 0.8f && y < 1.0f) {
-            wxCommandEvent event(wxEVT_BUTTON);
-            event.SetId(ID_TOGGLE_PANEL);
-            wxPostEvent(GetParent(), event);
-        }
-    }
 }
 
 void GLCanvas::ToggleShape(int index, bool state) {
