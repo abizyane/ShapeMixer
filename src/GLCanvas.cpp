@@ -17,22 +17,19 @@ GLCanvas::GLCanvas(wxWindow* parent)
     _shapes.push_back(new Triangle());
     _shapes.push_back(new Square());
     _shapes.push_back(new Circle());
-    _shapes.push_back(new Julia());  // Add Julia shape
-    _shapeStates = std::vector<bool>(4, false);  // Update size to 4
+    _shapes.push_back(new Julia());
+    _shapeStates = std::vector<bool>(4, false);
 
-    // Create toggle button with scaled PNG image
     wxBitmap buttonBitmap("resources/button.png", wxBITMAP_TYPE_PNG);
     wxImage img = buttonBitmap.ConvertToImage();
     img.Rescale(30, 30, wxIMAGE_QUALITY_HIGH);
     buttonBitmap = wxBitmap(img);
     
-    // Position button in top-right corner with 10px padding
     _toggleButton = new wxButton(this, ID_TOGGLE_PANEL, "", 
                                wxPoint(GetSize().x - 40, 10), 
                                wxSize(30, 30));
     _toggleButton->SetBitmap(buttonBitmap);
-    _toggleButton->SetWindowStyleFlag(wxBORDER_NONE | wxTRANSPARENT_WINDOW);  // Remove border and make transparent
-    // _toggleButton->SetBackgroundColour(wxColour(0, 0, 0, 0));  // Set transparent background
+    _toggleButton->SetWindowStyleFlag(wxBORDER_NONE | wxTRANSPARENT_WINDOW);
 }
 
 GLCanvas::~GLCanvas() {
@@ -48,7 +45,6 @@ void GLCanvas::OnSize(wxSizeEvent& evt) {
     SetCurrent(*_context);
     glViewport(0, 0, width, height);
     
-    // Update button position to stay in top-right corner
     if (_toggleButton) {
         _toggleButton->SetPosition(wxPoint(width - 50, 10));
     }
@@ -65,7 +61,6 @@ void GLCanvas::OnPaint(wxPaintEvent&) {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 
-    // Draw shapes
     for(size_t i = 0; i < _shapes.size(); ++i) {
         if(_shapeStates[i]) {
             _shapes[i]->Draw();

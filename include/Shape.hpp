@@ -89,14 +89,12 @@ public:
         glTranslatef(_posX, _posY, 0.0f);
         
         if (_scale <= 1.0f) {
-            // For scaling down, use regular OpenGL scaling
             glScalef(_scale, _scale, 1.0f);
             glPointSize(1.0f);
             float step = 0.003f;
             
             DrawFractal(step);
         } else {
-            // For scaling up, use our custom scaling method
             glPointSize(_scale);
             float step = 0.003f / _scale;
             
