@@ -22,8 +22,8 @@ void MainWindow::CreateControls() {
     _controlPanel = new wxPanel(this);
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-    const char* shapeNames[] = {"Triangle", "Square", "Circle"};
-    for(int i = 0; i < 3; ++i) {
+    const char* shapeNames[] = {"Triangle", "Square", "Circle", "Julia"};  // Add Julia
+    for(int i = 0; i < 4; ++i) {  // Update loop count to 4
         wxCheckBox* checkbox = new wxCheckBox(_controlPanel, wxID_ANY, shapeNames[i]);
         checkbox->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent& evt) {
             _canvas->ToggleShape(i, evt.IsChecked());

@@ -78,3 +78,60 @@ public:
         glPopMatrix();
     }
 };
+
+class Julia : public Shape {
+private:
+    static const int MAX_ITERATIONS = 100;
+    
+public:
+    void Draw() const override {
+        glPushMatrix();
+        glTranslatef(_posX, _posY, 0.0f);
+        
+        if (_scale <= 1.0f) {
+            // For scaling down, use regular OpenGL scaling
+            glScalef(_scale, _scale, 1.0f);
+            glPointSize(1.0f);
+            float step = 0.003f;
+            
+            DrawFractal(step);
+        } else {
+            // For scaling up, use our custom scaling method
+            glPointSize(_scale);
+            float step = 0.003f / _scale;
+            
+            DrawFractal(step);
+        }
+        
+        glPopMatrix();
+    }
+
+private:
+    void DrawFractal(float step) const {
+        glBegin(GL_POINTS);
+        for(float x = -1.5f; x <= 1.5f; x += step) {
+            for(float y = -1.5f; y <= 1.5f; y += step) {
+                float zx = x;
+                float zy = y;
+                int i;
+                
+                float cx = -0.4f;
+                float cy = 0.6f;
+                
+                for(i = 0; i < MAX_ITERATIONS; i++) {
+                    float tmp = zx * zx - zy * zy + cx;
+                    zy = 2.0f * zx * zy + cy;
+                    zx = tmp;
+                    
+                    if(zx * zx + zy * zy > 4.0f) break;
+                }
+                
+                if(i == MAX_ITERATIONS) {
+                    glColor3f(1.0f, 0.0f, 1.0f);
+                    glVertex2f(x * 0.5f, y * 0.5f);
+                }
+            }
+        }
+        glEnd();
+    }
+};

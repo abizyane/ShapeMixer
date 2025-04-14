@@ -17,7 +17,8 @@ GLCanvas::GLCanvas(wxWindow* parent)
     _shapes.push_back(new Triangle());
     _shapes.push_back(new Square());
     _shapes.push_back(new Circle());
-    _shapeStates = std::vector<bool>(3, false);
+    _shapes.push_back(new Julia());  // Add Julia shape
+    _shapeStates = std::vector<bool>(4, false);  // Update size to 4
 
     // Create toggle button with scaled PNG image
     wxBitmap buttonBitmap("resources/button.png", wxBITMAP_TYPE_PNG);
