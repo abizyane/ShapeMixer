@@ -31,7 +31,8 @@ GLCanvas::GLCanvas(wxWindow* parent)
                                wxPoint(GetSize().x - 40, 10), 
                                wxSize(30, 30));
     _toggleButton->SetBitmap(buttonBitmap);
-    _toggleButton->SetWindowStyleFlag(wxBORDER_NONE);  // Remove border
+    _toggleButton->SetWindowStyleFlag(wxBORDER_NONE | wxTRANSPARENT_WINDOW);  // Remove border and make transparent
+    // _toggleButton->SetBackgroundColour(wxColour(0, 0, 0, 0));  // Set transparent background
 }
 
 GLCanvas::~GLCanvas() {

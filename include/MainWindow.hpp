@@ -2,7 +2,6 @@
 #include <wx/wx.h>
 #include <wx/sizer.h>
 #include "GLCanvas.hpp"
-#include "Constants.hpp"
 
 class MainWindow : public wxFrame {
 private:

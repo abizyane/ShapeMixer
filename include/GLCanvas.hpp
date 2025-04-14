@@ -4,7 +4,8 @@
 #include <wx/bitmap.h>
 #include <vector>
 #include "Shape.hpp"
-#include "Constants.hpp"
+
+const int ID_TOGGLE_PANEL = wxID_HIGHEST + 1;
 
 class GLCanvas : public wxGLCanvas {
 private:
