@@ -1,8 +1,7 @@
 #pragma once
 #include <wx/glcanvas.h>
-#include <wx/image.h>
-#include <wx/dc.h>
-#include <wx/dcclient.h>
+#include <wx/button.h>
+#include <wx/bitmap.h>
 #include <vector>
 #include "Shape.hpp"
 #include "Constants.hpp"
@@ -12,12 +11,11 @@ private:
     wxGLContext* _context;
     std::vector<Shape*> _shapes;
     std::vector<bool> _shapeStates;
-    GLuint _buttonTexture;
+    wxButton* _toggleButton;
     
     void OnPaint(wxPaintEvent& evt);
     void OnMouse(wxMouseEvent& evt);
     void OnSize(wxSizeEvent& evt);
-    GLuint LoadTexture(const wxString& filename);
 
 public:
     GLCanvas(wxWindow* parent);

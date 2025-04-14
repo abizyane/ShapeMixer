@@ -2,7 +2,7 @@
 
 MainWindow::MainWindow(const wxString& title, int width, int height)
     : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(width, height)),
-      _isPanelVisible(true)
+      _isPanelVisible(false)
 {
     wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
     
@@ -13,6 +13,7 @@ MainWindow::MainWindow(const wxString& title, int width, int height)
     mainSizer->Add(_controlPanel, 0, wxEXPAND);
     
     SetSizer(mainSizer);
+    _controlPanel->Show(false);
 
     Bind(wxEVT_BUTTON, &MainWindow::OnTogglePanel, this, ID_TOGGLE_PANEL);
 }
