@@ -89,12 +89,14 @@ public:
         glTranslatef(_posX, _posY, 0.0f);
         
         if (_scale <= 1.0f) {
+            // For scaling down, use regular OpenGL scaling
             glScalef(_scale, _scale, 1.0f);
             glPointSize(1.0f);
             float step = 0.003f;
             
             DrawFractal(step);
         } else {
+            // For scaling up, use our custom scaling method
             glPointSize(_scale);
             float step = 0.003f / _scale;
             
@@ -126,6 +128,61 @@ private:
                 
                 if(i == MAX_ITERATIONS) {
                     glColor3f(1.0f, 0.0f, 1.0f);
+                    glVertex2f(x * 0.5f, y * 0.5f);
+                }
+            }
+        }
+        glEnd();
+    }
+};
+
+class Mandelbrot : public Shape {
+private:
+    static const int MAX_ITERATIONS = 100;
+    
+public:
+    void Draw() const override {
+        glPushMatrix();
+        glTranslatef(_posX, _posY, 0.0f);
+        
+        if (_scale <= 1.0f) {
+            glScalef(_scale, _scale, 1.0f);
+            glPointSize(1.0f);
+            float step = 0.003f;
+            
+            DrawFractal(step);
+        } else {
+            glPointSize(_scale);
+            float step = 0.003f / _scale;
+            
+            DrawFractal(step);
+        }
+        
+        glPopMatrix();
+    }
+
+private:
+    void DrawFractal(float step) const {
+        glBegin(GL_POINTS);
+        for(float x = -2.0f; x <= 0.5f; x += step) {
+            for(float y = -1.25f; y <= 1.25f; y += step) {
+                float zx = 0.0f;
+                float zy = 0.0f;
+                float cx = x;
+                float cy = y;
+                int i;
+                
+                for(i = 0; i < MAX_ITERATIONS; i++) {
+                    float tmp = zx * zx - zy * zy + cx;
+                    zy = 2.0f * zx * zy + cy;
+                    zx = tmp;
+                    
+                    if(zx * zx + zy * zy > 4.0f) break;
+                }
+                
+                if(i == MAX_ITERATIONS) {
+                    float t = (float)i / MAX_ITERATIONS;
+                    glColor3f(t, 0.0f, 1.0f - t);
                     glVertex2f(x * 0.5f, y * 0.5f);
                 }
             }

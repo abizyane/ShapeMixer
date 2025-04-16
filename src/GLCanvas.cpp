@@ -18,7 +18,8 @@ GLCanvas::GLCanvas(wxWindow* parent)
     _shapes.push_back(new Square());
     _shapes.push_back(new Circle());
     _shapes.push_back(new Julia());
-    _shapeStates = std::vector<bool>(4, false);
+    _shapes.push_back(new Mandelbrot());
+    _shapeStates = std::vector<bool>(5, false);
 
     wxBitmap buttonBitmap("resources/button.png", wxBITMAP_TYPE_PNG);
     wxImage img = buttonBitmap.ConvertToImage();

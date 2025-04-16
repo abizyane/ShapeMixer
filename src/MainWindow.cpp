@@ -22,8 +22,8 @@ void MainWindow::CreateControls() {
     _controlPanel = new wxPanel(this);
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-    const char* shapeNames[] = {"Triangle", "Square", "Circle", "Julia Fractal"};
-    for(int i = 0; i < 4; ++i) {
+    const char* shapeNames[] = {"Triangle", "Square", "Circle", "Julia Fractal", "Mandelbrot Fractal"};
+    for(int i = 0; i < 5; ++i) {
         wxCheckBox* checkbox = new wxCheckBox(_controlPanel, wxID_ANY, shapeNames[i]);
         checkbox->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent& evt) {
             _canvas->ToggleShape(i, evt.IsChecked());
@@ -63,7 +63,7 @@ void MainWindow::CreateControls() {
                 checkbox->SetValue(false);
             }
         }
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 5; ++i) {
             _canvas->ToggleShape(i, false);
         }
     });
